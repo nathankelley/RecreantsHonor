@@ -6,7 +6,7 @@ const doc = {
     description: "Recreant's Honor API"
   },
   host: 'recreants-honor-api.onrender.com',
-  schemes: ['http']
+  schemes: ['https']
 };
 
 const outputFile = './swagger.json';
