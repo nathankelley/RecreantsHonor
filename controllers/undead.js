@@ -1,5 +1,6 @@
 const mongodb = require('../db/connect');
 const ObjectId = require('mongodb').ObjectId;
+const authSchema = require('../helpers/validation');
 
 
 // GET all undead
@@ -28,20 +29,23 @@ const getSingle = async (req, res, next) => {
   
   // POST (write) a contact to the db
   const writeUndead = async (req, res) => {
-    const undead = {
-      name: req.body.name,
-      image: req.body.image,
-      description: req.body.description,
-      health_points: req.body.health_points,
-      item_drop_chance: req.body.item_drop_chance,
-      undead_rating: req.body.undead_rating,
-      item_drops: req.body.item_drops
-    };
-    const response = await mongodb.getDb().db('RecreantsHonor').collection('Undead').insertOne(undead);
-    if (response.acknowledged) {
-      res.status(201).json(response);
-    } else {
-      res.status(500).json(response.error || 'Some error occurred while creating the undead.');
+    try {
+      const undead = {
+        name: req.body.name,
+        image: req.body.image,
+        description: req.body.description,
+        health_points: req.body.health_points,
+        item_drop_chance: req.body.item_drop_chance,
+        undead_rating: req.body.undead_rating,
+        item_drops: req.body.item_drops
+      };
+      // validate undead
+      const result = await authSchema.validateAsync(undead);
+      // insert into mongodb
+      const response = await mongodb.getDb().db('RecreantsHonor').collection('Undead').insertOne(undead);
+      if (response.acknowledged) { res.status(201).json(response); }
+    } catch (error) {
+       if (error.isJoi === true) { error.status = 422; }
     }
   };
   

@@ -1,2 +1,16 @@
 ###
 GET http://localhost:8080/undead
+
+###
+POST http://localhost:8080/undead HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Nathan",
+    "image": "",
+    "description": "Pretty cool",
+    "health_points": 100,
+    "item_drop_chance": 0,
+    "undead_rating": "D",
+    "item_drops": "nothing"
+}
