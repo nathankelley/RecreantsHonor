@@ -116,13 +116,13 @@ module.exports.getUndead = (req, res) => {
         res.status(400).send({ message: 'Invalid ID Supplied' });
         return;
       }
-      Undead.deleteOne({ _id: undead_id }, function (err, result) {
-        if (err) {
-          res.status(500).json(err || 'Some error occurred while deleting the undead.');
-        } else {
+      Undead.deleteOne({ _id: undead_id })
+        .then(() => { 
           res.status(204).send(result);
-        }
-      });
+        })
+        .catch((err) => {
+          res.status(500).json(err || 'Some error occurred while deleting the undead.');
+          })
     } catch (err) {
       res.status(500).json(err || 'Some error occurred while deleting the undead.');
     }
