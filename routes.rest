@@ -19,11 +19,11 @@ content-type: application/json
 }
 
 ###
-PUT http://localhost:8080/undead/647c259f4cc365ad365fde33 HTTP/1.1
+PUT http://localhost:8080/undead/647c28a47989c15714a67141 HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Nathan",
+    "name": "Nathan Kelley",
     "image": "none",
     "description": "Pretty cool",
     "health_points": "100",
@@ -35,5 +35,5 @@ Content-Type: application/json
 
 
 ###
-DELETE http://localhost:8080/undead/647c284b7989c15714a6713b HTTP/1.1
+DELETE http://localhost:8080/undead/647c28a47989c15714a67141 HTTP/1.1
 
