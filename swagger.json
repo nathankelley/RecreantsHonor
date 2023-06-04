@@ -5,10 +5,10 @@
     "description": "Recreant's Honor API",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "recreants-honor-api.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/undead/": {
