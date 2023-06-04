@@ -2,15 +2,38 @@
 GET http://localhost:8080/undead
 
 ###
+GET http://localhost:8080/undead/647c0ea07b5febbcfe9a21b2
+
+###
 POST http://localhost:8080/undead HTTP/1.1
 content-type: application/json
 
 {
     "name": "Nathan",
-    "image": "",
+    "image": "none",
     "description": "Pretty cool",
-    "health_points": 100,
-    "item_drop_chance": 0,
+    "health_points": "100",
+    "item_drop_chance": "0",
     "undead_rating": "D",
-    "item_drops": "nothing"
+    "item_drops": ["heart", "coolness"]
 }
+
+###
+PUT http://localhost:8080/undead/647c0ea07b5febbcfe9a21b2 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Nathan",
+    "image": "none",
+    "description": "Pretty cool",
+    "health_points": "100",
+    "item_drop_chance": "0",
+    "undead_rating": "D",
+    "item_drops": ["heart", "coolness", "wisdom"],
+    "__v": "0"
+}
+
+
+###
+DELETE http://localhost:8080/undead/647c0ea07b5febbcfe9a21b2 HTTP/1.1
+

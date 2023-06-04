@@ -1,10 +1,8 @@
 const express = require('express');
-const openCors = require("../middleware/openCors");
-
 const router = express.Router();
 
-router.use(openCors);
 router.use('/', require('./swagger'));
-router.use('/undead', require('./undead'))
+router.use('/undead', require('./undead'));
+//router.use('/recreants', require('./recreants'));
 
 module.exports = router;
