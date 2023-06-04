@@ -2,7 +2,7 @@
 GET http://localhost:8080/undead
 
 ###
-GET http://localhost:8080/undead/647c0ea07b5febbcfe9a21b2
+GET http://localhost:8080/undead/647c284b7989c15714a6713b
 
 ###
 POST http://localhost:8080/undead HTTP/1.1
@@ -19,7 +19,7 @@ content-type: application/json
 }
 
 ###
-PUT http://localhost:8080/undead/647c0ea07b5febbcfe9a21b2 HTTP/1.1
+PUT http://localhost:8080/undead/647c259f4cc365ad365fde33 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -35,5 +35,5 @@ Content-Type: application/json
 
 
 ###
-DELETE http://localhost:8080/undead/647c0ea07b5febbcfe9a21b2 HTTP/1.1
+DELETE http://localhost:8080/undead/647c284b7989c15714a6713b HTTP/1.1
 

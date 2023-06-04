@@ -86,22 +86,21 @@ module.exports.getUndead = (req, res) => {
       //   res.status(400).send({ message: nameCheck.error });
       //   return;
       // }
-      Undead.findOne({ _id: undead_id }, function (err, undead) {
-        undead.name = req.params.name;
-        undead.image = req.body.image;
-        undead.description = req.body.description;
-        undead.health_points = req.body.health_points;
-        undead.item_drop_chance = req.body.item_drop_chance;
-        undead.undead_rating = req.body.undead_rating;
-        undead.item_drops = req.body.item_drops;
-        undead.save(function (err) {
-          if (err) {
+      Undead.replaceOne({ _id: undead_id }, {
+        name: req.params.name,
+        image: req.body.image,
+        description: req.body.description,
+        health_points: req.body.health_points,
+        item_drop_chance: req.body.item_drop_chance,
+        undead_rating: req.body.undead_rating,
+        item_drops: req.body.item_drops
+      })
+      .then(() => { 
+        res.status(204).send();
+      })
+      .catch((err) => {
             res.status(500).json(err || 'Some error occurred while updating the undead.');
-          } else {
-            res.status(204).send();
-          }
-        });
-      });
+          })
     } catch (err) {
       res.status(500).json(err);
     }
@@ -116,13 +115,12 @@ module.exports.getUndead = (req, res) => {
         res.status(400).send({ message: 'Invalid ID Supplied' });
         return;
       }
-      Undead.deleteOne({ _id: undead_id })
-        .then(() => { 
-          res.status(204).send(result);
-        })
-        .catch((err) => {
-          res.status(500).json(err || 'Some error occurred while deleting the undead.');
-          })
+      Undead.deleteOne({ _id: undead_id }).then(() => {
+        res.status(204).send();
+      }
+      ).catch((err) => {
+        res.status(500).json(err || 'Some error occurred while deleting the undead.');
+      });
     } catch (err) {
       res.status(500).json(err || 'Some error occurred while deleting the undead.');
     }
