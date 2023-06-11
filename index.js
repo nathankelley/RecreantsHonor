@@ -13,7 +13,8 @@ app
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
   })
-  .use('/', require('./routes')); 
+  .use('/', require('./routes'))
+
 
   const db = require('./models');
   db.mongoose

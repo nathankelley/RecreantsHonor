@@ -2,6 +2,9 @@
 GET http://localhost:8080/undead
 
 ###
+GET http://localhost:8080/user
+
+###
 GET http://localhost:8080/undead/647c284b7989c15714a6713b
 
 ###

@@ -1,6 +1,7 @@
+const passwordValidation = require('joi-password-complexity');
 const Joi = require('@hapi/joi');
 
-const authSchema = Joi.object({
+module.exports.authSchema = Joi.object({
     name: Joi.string().required(),
     image: Joi.string(),
     description: Joi.string().required(),
@@ -10,6 +11,16 @@ const authSchema = Joi.object({
     item_drops: Joi.array().items(Joi.string())
 });
 
-module.exports = {
-    authSchema
+const complexity = {
+    min: 8,
+    max: 26,
+    lowerCase: 1,
+    upperCase: 1,
+    numeric: 1,
+    symbol: 1,
+    requirementCount: 4
+}
+
+module.exports.passwordPass = (passwordToCheck) => {
+    return passwordValidation(complexity, 'Password').validate(passwordToCheck);
 }

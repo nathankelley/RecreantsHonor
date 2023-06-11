@@ -48,13 +48,8 @@ module.exports.getUndead = (req, res) => {
         res.status(400).send({ message: 'Content can not be empty!' });
         return;
       }
-      // const name = req.body.name;
-      // const nameCheck = nameUtil.nameCheck(name);
-      // if (nameCheck.error) {
-      //   res.status(400).send({ message: nameCheck.error });
-      //   return;
-      // }
       const undead = new Undead(req.body);
+      validate(authSchema(undead));
       undead
         .save()
         .then((data) => {
@@ -80,12 +75,6 @@ module.exports.getUndead = (req, res) => {
         res.status(400).send({ message: 'Invalid ID Supplied' });
         return;
       }
-      // const name = req.body.name;
-      // const nameCheck = nameUtil.nameCheck(name);
-      // if (nameCheck.error) {
-      //   res.status(400).send({ message: nameCheck.error });
-      //   return;
-      // }
       Undead.replaceOne({ _id: undead_id }, {
         name: req.params.name,
         image: req.body.image,

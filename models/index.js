@@ -6,7 +6,7 @@ mongoose.Promise = global.Promise;
 const db = {};
 db.mongoose = mongoose;
 db.url = dbConfig.url;
-//db.theme = require('./recreants.js')(mongoose);
+db.User = require('./user.js')(mongoose);
 db.Undead = require('./undead.js')(mongoose);
 
 module.exports = db;

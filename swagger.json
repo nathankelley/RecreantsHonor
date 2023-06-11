@@ -7,12 +7,21 @@
   },
   "host": "recreants-honor-api.onrender.com",
   "basePath": "/",
-  "schemes": [
-    "https"
+  "tags": [
+    {
+      "name": "undead",
+      "description": "Operations about undead"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
   ],
+  "schemes": ["https"],
   "paths": {
     "/undead/": {
       "get": {
+        "tags": ["undead"],
         "description": "",
         "produces": [
           "application/json"
@@ -25,6 +34,7 @@
         }
       },
       "post": {
+        "tags": ["undead"],
         "description": "",
         "parameters": [
           {
@@ -58,6 +68,11 @@
             }
           }
         ],
+        "security": [
+          {
+            "undead_auth": ["write:undead", "read:undead"]
+          } 
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -70,6 +85,7 @@
     },
     "/undead/{id}": {
       "get": {
+        "tags": ["undead"],
         "description": "",
         "produces": [
           "application/json"
@@ -89,6 +105,7 @@
         }
       },
       "put": {
+        "tags": ["undead"],
         "description": "",
         "parameters": [
           {
@@ -128,9 +145,14 @@
             }
           }
         ],
+          "security": [
+            {
+              "undead_auth": ["write:undead", "read:undead"]
+            } 
+          ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Success"
           },
           "500": {
             "description": "Internal Server Error"
@@ -138,6 +160,7 @@
         }
       },
       "delete": {
+        "tags": ["undead"],
         "description": "",
         "parameters": [
           {
@@ -147,6 +170,11 @@
             "type": "string"
           }
         ],
+        "security": [
+          {
+            "undead_auth": ["write:undead", "read:undead"]
+          } 
+        ],
         "responses": {
           "204": {
             "description": "No Content"
@@ -154,6 +182,297 @@
           "500": {
             "description": "Internal Server Error"
           }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Create user",
+        "description": "This is for when a user creates an account.",
+        "operationId": "createUser",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Credentials"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successfully created user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Nike Theme"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid theme name value"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "tags": ["Login"],
+        "summary": "Logs user into the system",
+        "operationId": "loginUser",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            },
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": ["Login"],
+        "summary": "Logs out current logged in user session",
+        "operationId": "logoutUser",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get user by user ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid user ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["user"],
+        "summary": "Updated user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "user (ID) that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully modified user"
+          },
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user ID that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted user"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get all users",
+        "operationId": "getAllUsers",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "Array",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "500": {
+            "description": "Error occurred"
+          }
+        }
+      },
+      "post": {
+        "tags": ["user"],
+        "summary": "Create user",
+        "description": "This is for when a user creates an account",
+        "operationId": "createUser",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Credentials"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "A User object",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "user_oath": {
+      "type": "oauth2",
+      "authorizationUrl": "http://RecreantsHonor.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:users": "modify users in your account",
+        "read:users": "read your users"
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "required": ["password", "username"],
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "format": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "info": {
+          "$ref": "#/definitions/User_info"
+        },
+        "profile": {
+          "$ref": "#/definitions/User_profile"
+        }
+      }
+    },
+    "Credentials": {
+      "type": "object",
+      "required": ["password", "username"],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
         }
       }
     }
